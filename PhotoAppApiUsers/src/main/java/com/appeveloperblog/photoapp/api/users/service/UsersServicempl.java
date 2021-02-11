@@ -2,15 +2,39 @@ package com.appeveloperblog.photoapp.api.users.service;
 
 import java.util.UUID;
 
-import com.appeveloperblog.photoapp.api.users.UserDto;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+import com.appeveloperblog.photoapp.api.users.UserDto;
+import com.appeveloperblog.photoapp.api.users.UsersRepository;
+import com.appeveloperblog.photoapp.api.users.data.UserEntity;
+@Service
 public class UsersServicempl implements UsersService {
+	
+	UsersRepository usersRepository;
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	public UsersServicempl(UsersRepository usersRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+		
+		this.usersRepository=usersRepository;
+		this.bCryptPasswordEncoder=bCryptPasswordEncoder;
+	}
 
 	@Override
 	public UserDto createUser(UserDto userDetails) {
 		// TODO Auto-generated method stub
 		userDetails.setUserId(UUID.randomUUID().toString());
-		return null;
+		
+		ModelMapper modelmapper=new ModelMapper();
+		modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		UserEntity userEntity=modelmapper.map(userDetails, UserEntity.class);
+		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
+		usersRepository.save(userEntity);
+		UserDto returnval=modelmapper.map(userEntity, UserDto.class);
+		return returnval;
 	}
 
 	

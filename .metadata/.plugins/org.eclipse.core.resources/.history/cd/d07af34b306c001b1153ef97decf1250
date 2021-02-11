@@ -1,0 +1,37 @@
+package com.appeveloperblog.photoapp.api.users.service;
+
+import java.util.UUID;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.appeveloperblog.photoapp.api.users.UserDto;
+import com.appeveloperblog.photoapp.api.users.UsersRepository;
+import com.appeveloperblog.photoapp.api.users.data.UserEntity;
+@Service
+public class UsersServicempl implements UsersService {
+	
+	UsersRepository usersRepository;
+	@Autowired
+	public UsersServicempl(UsersRepository usersRepository) {
+		
+		this.usersRepository=usersRepository;
+	}
+
+	@Override
+	public UserDto createUser(UserDto userDetails) {
+		// TODO Auto-generated method stub
+		userDetails.setUserId(UUID.randomUUID().toString());
+		ModelMapper modelmapper=new ModelMapper();
+		modelmapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		UserEntity userEntity=modelmapper.map(userDetails, UserEntity.class);
+		userEntity.setEncryptedPassword(UUID.randomUUID().toString());
+		usersRepository.save(userEntity);
+		return userDetails;
+	}
+
+	
+
+}
