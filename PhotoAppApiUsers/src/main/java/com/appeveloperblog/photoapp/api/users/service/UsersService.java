@@ -1,8 +1,11 @@
 package com.appeveloperblog.photoapp.api.users.service;
 
-import com.appeveloperblog.photoapp.api.users.UserDto;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UsersService {
+import com.appeveloperblog.photoapp.api.users.shared.UserDto;
+
+public interface UsersService extends UserDetailsService{
 	UserDto createUser(UserDto userDetails);
+	UserDto getUserDetailsByEmail(String email);
 
 }

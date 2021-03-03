@@ -1,5 +1,0 @@
-package com.appeveloperblog.photoapp.api.users.service;
-
-public class UsersServicempl implements UsersService {
-
-}

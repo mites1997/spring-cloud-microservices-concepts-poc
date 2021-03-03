@@ -1,5 +1,0 @@
-package com.appeveloperblog.photoapp.api.users.ui.model;
-
-public class CreateUserResponseModel {
-
-}

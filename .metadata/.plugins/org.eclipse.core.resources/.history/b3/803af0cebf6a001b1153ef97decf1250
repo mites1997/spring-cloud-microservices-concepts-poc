@@ -1,8 +1,0 @@
-spring.application.name=zuul
-server.port=8011
-eureka.client.serviceUrl.defaultZone=http://localhost:8010/eureka
-ribbon.restclient.enabled=true
-zuul.routes.users-ws.path=/users-ws/**
-zuul.routes.users-ws.url=http://localhost:0
-zuul.routes.book-service.serviceId=users-ws
-
